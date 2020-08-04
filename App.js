@@ -64,22 +64,15 @@ class AlbumsView extends Component {
 	render = () => {
 		const { navigate } = this.props.navigation;
 
-		return (
-
-				<FlatList data={this.state.topAlbums} renderItem={ ({item}) =>
+		return (<FlatList data={this.state.topAlbums} renderItem={ ({item}) =>
 				<SafeAreaView>
 					<Pressable onPress={() => navigate('AlbumDetails', { item })}
 					style={{  flexDirection: 'row', backgroundColor: "#fff", marginBottom: 1 }}>
-						<Image onPress={() => navigate('AlbumDetails', { item })} style={{ width: 70, height: 70 }} source={{ uri: item.image }} />
-						<Text
-						style={{fontSize: 20, padding: 10, width: 60, fontWeight: "bold"}}>{item.position}</Text>
-						<Text
-						style={styles.listTitles}>{item.title}</Text>
+						<Image style={{ width: 70, height: 70 }} source={{ uri: item.image }} />
+						<Text style={{fontSize: 20, padding: 10, width: 60, fontWeight: "bold"}}>{item.position}</Text>
+						<Text style={styles.listTitles}>{item.title}</Text>
 					</Pressable>
-					</SafeAreaView>
-				} />
-
-	  	);
+				</SafeAreaView>} />);
 	}
 }
 

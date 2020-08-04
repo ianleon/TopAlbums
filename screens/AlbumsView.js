@@ -18,29 +18,75 @@ import {
   FlatList,
   Image,
   Linking,
+  TextInput,
   Pressable
 } from 'react-native';
 
+import filter from 'lodash.filter'
+
+import { Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 
 UIManager.setLayoutAnimationEnabledExperimental &&
 UIManager.setLayoutAnimationEnabledExperimental(true);
 
-const ListRow = ({item}) => {
-	return <SafeAreaView>
-		<Pressable
-		onPress={() => navigate('AlbumDetails', {item})}
-		style={styles.listRows}>
-			<Image style={styles.listImage} source={{ uri: item.image }} />
-			<Text style={styles.listTitles}>{item.title}</Text>
-		</Pressable>
-	</SafeAreaView>
+class ListRow extends Component {
+	render = () => {
+
+		const {data : {item}, navigate} = this.props;
+
+		return (<SafeAreaView>
+			<Pressable
+			onPress={() => navigate('AlbumDetails', {item})}
+			style={styles.listRows}>
+			<View>
+			  <Avatar
+			    rounded
+			    source={{
+			      uri: item.image,
+			    }}
+			    size="medium"
+				containerStyle={{ margin: 10 }}
+			  />
+
+
+			  <Badge
+			    status="error"
+				value={item.position}
+			    containerStyle={{ position: 'absolute', top: 4, right: -4 }}
+			  />
+			</View>
+
+
+				<Text style={styles.listTitles}>{item.title}</Text>
+			</Pressable>
+		</SafeAreaView>)
+	}
 }
 
 class AlbumsView extends Component {
 
 	state = {
       topAlbums: [],
+	  filteredTopAlbums: [],
+	  query: '',
     };
+
+	contains = ({ title, artist }, query) => {
+
+		if (title.toLowerCase().includes(query) || artist.toLowerCase().includes(query)) {
+			return true;
+	  	}
+
+		return false
+	}
+
+	handleSearch = text => {
+		const formattedQuery = text.toLowerCase();
+		const filteredTopAlbums = filter(this.state.topAlbums, album => {
+			return this.contains(album, formattedQuery)
+		});
+		this.setState({ filteredTopAlbums, query: text });
+	}
 
 
 	setAnimation = () => {
@@ -76,18 +122,47 @@ class AlbumsView extends Component {
 				  title, artist,category, link});
 		  });
 		  this.setAnimation();
-		  this.setState({topAlbums: cleanData});
+		  this.setState({topAlbums: cleanData, filteredTopAlbums: cleanData});
 
 		});
     }
 
+	renderHeader = () => (
+	  <View
+	    style={{
+	      backgroundColor: '#fff',
+	      padding: 10,
+	      alignItems: 'center',
+	      justifyContent: 'center'
+	    }}>
+	    <TextInput
+		  style={styles.listSearch}
+	      autoCapitalize='none'
+	      onChangeText={this.handleSearch}
+	      placeholder='Search'
+	    />
+	  </View>
+	)
+
 	render = () => {
 		const { navigate } = this.props.navigation;
-		return (<FlatList data={this.state.topAlbums} renderItem={ListRow} />);
+		return (<FlatList
+			ListHeaderComponent={this.renderHeader}
+			data={this.state.filteredTopAlbums}
+			renderItem={(item) => <ListRow data={item} navigate={navigate} /> } />);
 	}
 }
 
 const styles = StyleSheet.create({
+  listSearch: {
+	height: 40,
+	fontSize: 20,
+	borderRadius: 10,
+	borderColor: '#ddd',
+	borderWidth: 1,
+	width: "100%",
+	paddingLeft: 10
+  },
   listTitles: {
 	padding: 10,
 	fontSize: 20,

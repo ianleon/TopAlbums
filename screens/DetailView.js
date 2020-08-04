@@ -4,7 +4,7 @@
  * @format
  * @flow strict-local
  */
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import {
   SafeAreaView,
   StyleSheet,
@@ -24,25 +24,22 @@ const Hairline = () => {
 	return <View style={{backgroundColor: "#ddd", width: "100%", height: 1, marginBottom: 25}}></View>
 }
 
-function StarRatings({stars}) {
+function StarRatings({stars,onPress}) {
 
-	var icons = [
-	<Icon key="star_0" name="star" size={20} />,
-	<Icon key="star_1" name="star" size={20} />,
-	<Icon key="star_2" name="star" size={20} />,
-	<Icon key="star_3" name="star" size={20} />,
-	<Icon key="star_4" name="star" size={20} />
-	];
+	var starSize = 40;
+	var icons = [];
+	for (let i = 0; i < 5; i++) {
 
-	icons = icons.map((icon,index) => {
-		if (index < stars) {
-			return icon;
-		}
-		return <Icon key="staro_{index}" name="staro" size={20} />;
+		icons.push(
+			<Icon
+			key={i}
+			name={i < stars ? "star" : "staro"}
+			size={starSize}
+			onPress={ () => { onPress(i + 1) } } />
+			);
+	}
 
-	});
-
-
+	
 	return (<View style={{ flexDirection: "row" }}>
 		{icons}
 	</View>)
@@ -53,6 +50,7 @@ function DetailView({ route }) {
   const { item } = route.params;
   const {key, position, image, title, artist, category, link, releaseDate} = item;
 
+  const [rating, setRating] = useState(3);
   return <>
   <ScrollView style={{ flex: 1, flexDirection: 'column', padding: 16}}>
 
@@ -85,7 +83,9 @@ function DetailView({ route }) {
 		<Text style={styles.detailLabel}>RELEASE DATE</Text>
 		<Text style={styles.detailValue}>{ releaseDate }</Text>
 
-		<StarRatings stars={4}/>
+		<StarRatings stars={rating} onPress={(i) => {
+			setRating(i);
+			}}/>
 
 
 		<Pressable

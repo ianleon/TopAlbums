@@ -12,6 +12,8 @@ import {
   View,
   Button,
   Text,
+  UIManager,
+  LayoutAnimation,
   StatusBar,
   FlatList,
   Image,
@@ -19,11 +21,26 @@ import {
   Pressable
 } from 'react-native';
 
+
+UIManager.setLayoutAnimationEnabledExperimental &&
+UIManager.setLayoutAnimationEnabledExperimental(true);
+
 class AlbumsView extends Component {
 
 	state = {
       topAlbums: [],
     };
+
+
+	setAnimation = () => {
+		LayoutAnimation.configureNext({
+			duration: 500,
+			create: {
+				type: LayoutAnimation.Types.easeOut,
+				property: LayoutAnimation.Properties.scaleY,
+			},
+		});
+	};
 
   	componentDidMount = () => {
 
@@ -43,8 +60,11 @@ class AlbumsView extends Component {
 			  let image = ent["im:image"][0].label;
 			  let link = ent.link.attributes.href;
 
-			  return ({key, position, image, releaseDate, title, artist,category, link});
+			  return ({
+				  key, position, image, releaseDate,
+				  title, artist,category, link});
 		  });
+		  this.setAnimation();
 		  this.setState({topAlbums: cleanData});
 
 		});

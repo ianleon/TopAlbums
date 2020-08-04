@@ -158,6 +158,119 @@ exports[`renders details correctly 1`] = `
         Test
       </Text>
       <View
+        style={
+          Object {
+            "flexDirection": "row",
+          }
+        }
+      >
+        <Text
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 40,
+              },
+              undefined,
+              Object {
+                "fontFamily": "anticon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 40,
+              },
+              undefined,
+              Object {
+                "fontFamily": "anticon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 40,
+              },
+              undefined,
+              Object {
+                "fontFamily": "anticon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 40,
+              },
+              undefined,
+              Object {
+                "fontFamily": "anticon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+        <Text
+          allowFontScaling={false}
+          onPress={[Function]}
+          style={
+            Array [
+              Object {
+                "color": undefined,
+                "fontSize": 40,
+              },
+              undefined,
+              Object {
+                "fontFamily": "anticon",
+                "fontStyle": "normal",
+                "fontWeight": "normal",
+              },
+              Object {},
+            ]
+          }
+        >
+          
+        </Text>
+      </View>
+      <View
         accessible={true}
         focusable={true}
         onBlur={[Function]}
@@ -179,17 +292,49 @@ exports[`renders details correctly 1`] = `
           }
         }
       >
-        <Text
+        <View
           style={
             Object {
-              "color": "white",
-              "fontSize": 20,
-              "fontWeight": "bold",
+              "flex": 1,
+              "flexDirection": "row",
             }
           }
         >
-          Get
-        </Text>
+          <Text
+            allowFontScaling={false}
+            style={
+              Array [
+                Object {
+                  "color": "#FFF",
+                  "fontSize": 20,
+                },
+                Object {
+                  "marginRight": 5,
+                  "top": 1,
+                },
+                Object {
+                  "fontFamily": "anticon",
+                  "fontStyle": "normal",
+                  "fontWeight": "normal",
+                },
+                Object {},
+              ]
+            }
+          >
+            
+          </Text>
+          <Text
+            style={
+              Object {
+                "color": "white",
+                "fontSize": 20,
+                "fontWeight": "bold",
+              }
+            }
+          >
+            MUSIC
+          </Text>
+        </View>
       </View>
     </RCTSafeAreaView>
   </View>
@@ -249,7 +394,7 @@ exports[`renders top albums correctly 1`] = `
               "borderWidth": 1,
               "fontSize": 20,
               "height": 40,
-              "padding": 10,
+              "paddingLeft": 10,
               "width": "100%",
             }
           }

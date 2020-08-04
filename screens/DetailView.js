@@ -24,7 +24,31 @@ const Hairline = () => {
 	return <View style={{backgroundColor: "#ddd", width: "100%", height: 1, marginBottom: 25}}></View>
 }
 
-const DetailView = ({ route }) => {
+function StarRatings({stars}) {
+
+	var icons = [
+	<Icon key="star_0" name="star" size={20} />,
+	<Icon key="star_1" name="star" size={20} />,
+	<Icon key="star_2" name="star" size={20} />,
+	<Icon key="star_3" name="star" size={20} />,
+	<Icon key="star_4" name="star" size={20} />
+	];
+
+	icons = icons.map((icon,index) => {
+		if (index < stars) {
+			return icon;
+		}
+		return <Icon key="staro_{index}" name="staro" size={20} />;
+
+	});
+
+
+	return (<View style={{ flexDirection: "row" }}>
+		{icons}
+	</View>)
+}
+
+function DetailView({ route }) {
   /* 2. Get the param */
   const { item } = route.params;
   const {key, position, image, title, artist, category, link, releaseDate} = item;
@@ -60,6 +84,9 @@ const DetailView = ({ route }) => {
 		<Hairline />
 		<Text style={styles.detailLabel}>RELEASE DATE</Text>
 		<Text style={styles.detailValue}>{ releaseDate }</Text>
+
+		<StarRatings stars={4}/>
+
 
 		<Pressable
 		onPress={ ()=> Linking.openURL(link) }

@@ -50,11 +50,12 @@ class AlbumsView extends Component {
 			  let title = ent["im:name"].label;
 
 			  let artist = ent["im:artist"].label;
+			  let releaseDate = ent["im:releaseDate"].attributes.label;
 			  let category = ent.category.attributes.label;
 			  let image = ent["im:image"][0].label;
 			  let link = ent.link.attributes.href;
 
-			  return ({key, position, image, title, artist,category, link});
+			  return ({key, position, image, releaseDate, title, artist,category, link});
 		  });
 		  this.setState({topAlbums: cleanData});
 
@@ -67,9 +68,8 @@ class AlbumsView extends Component {
 		return (<FlatList data={this.state.topAlbums} renderItem={ ({item}) =>
 				<SafeAreaView>
 					<Pressable onPress={() => navigate('AlbumDetails', { item })}
-					style={{  flexDirection: 'row', backgroundColor: "#fff", marginBottom: 1 }}>
+					style={{ alignItems: "center", flexDirection: 'row', backgroundColor: "#fff", marginBottom: 1 }}>
 						<Image style={{ width: 70, height: 70 }} source={{ uri: item.image }} />
-						<Text style={{fontSize: 20, padding: 10, width: 60, fontWeight: "bold"}}>{item.position}</Text>
 						<Text style={styles.listTitles}>{item.title}</Text>
 					</Pressable>
 				</SafeAreaView>} />);
@@ -88,10 +88,14 @@ const HomeScreen = ({ navigation }) => {
     />
   );
 };
+
+const Hairline = () => {
+	return <View style={{backgroundColor: "#ddd", width: "100%", height: 1, marginBottom: 25}}></View>
+}
 const DetailView = ({ route }) => {
   /* 2. Get the param */
   const { item } = route.params;
-  const {key, position, image, title, artist, category, link} = item;
+  const {key, position, image, title, artist, category, link, releaseDate} = item;
 
   return <>
   <ScrollView style={{ flex: 1, flexDirection: 'column', padding: 16}}>
@@ -115,11 +119,27 @@ const DetailView = ({ route }) => {
 
 		<Text style={styles.detailLabel}>POSITION</Text>
 		<Text style={styles.detailValue}>{ position }</Text>
+		<Hairline />
 		<Text style={styles.detailLabel}>ARTIST</Text>
 		<Text style={styles.detailValue}>{ artist }</Text>
+		<Hairline />
 		<Text style={styles.detailLabel}>GENRE</Text>
 		<Text style={styles.detailValue}>{ category }</Text>
-		<Button title='Apple Music' color="#F22" onPress={ ()=> Linking.openURL(link) }>Buy</Button>
+		<Hairline />
+		<Text style={styles.detailLabel}>RELEASE DATE</Text>
+		<Text style={styles.detailValue}>{ releaseDate }</Text>
+
+		<Pressable
+		onPress={ ()=> Linking.openURL(link) }
+		style={{
+			backgroundColor: "#000",
+			borderRadius: 20,
+			alignItems: "center",
+			padding: 20,
+			marginTop: 40,
+			}}>
+			<Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>Get</Text>
+		</Pressable>
 	</SafeAreaView>
   </ScrollView>
 

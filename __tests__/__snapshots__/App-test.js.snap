@@ -198,6 +198,7 @@ exports[`renders details correctly 1`] = `
 
 exports[`renders top albums correctly 1`] = `
 <RCTScrollView
+  ListHeaderComponent={[Function]}
   data={Array []}
   disableVirtualization={false}
   getItem={[Function]}
@@ -221,6 +222,41 @@ exports[`renders top albums correctly 1`] = `
   viewabilityConfigCallbackPairs={Array []}
   windowSize={21}
 >
-  <View />
+  <View>
+    <View
+      onLayout={[Function]}
+    >
+      <View
+        style={
+          Object {
+            "alignItems": "center",
+            "backgroundColor": "#fff",
+            "justifyContent": "center",
+            "padding": 10,
+          }
+        }
+      >
+        <TextInput
+          allowFontScaling={true}
+          autoCapitalize="none"
+          onChangeText={[Function]}
+          placeholder="Search"
+          rejectResponderTermination={true}
+          style={
+            Object {
+              "borderColor": "#ddd",
+              "borderRadius": 10,
+              "borderWidth": 1,
+              "fontSize": 20,
+              "height": 40,
+              "padding": 10,
+              "width": "100%",
+            }
+          }
+          underlineColorAndroid="transparent"
+        />
+      </View>
+    </View>
+  </View>
 </RCTScrollView>
 `;

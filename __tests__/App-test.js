@@ -4,6 +4,18 @@
 
 import 'react-native';
 import React from 'react';
+import {
+  SafeAreaView,
+  StyleSheet,
+  ScrollView,
+  View,
+  Button,
+  Text,
+  FlatList,
+  Image,
+  Linking,
+  Pressable
+} from 'react-native';
 import DetailView from '../DetailView';
 import AlbumsView from '../AlbumsView';
 
@@ -26,7 +38,8 @@ it('renders details correctly', () => {
 			}
 		}
 	};
-  	renderer.create(<DetailView route={testRoute} />);
+  	let detailRender = renderer.create(<DetailView route={testRoute} />).toJSON();
+  	expect(detailRender).toMatchSnapshot();
 });
 
 it('renders top albums correctly', () => {
@@ -36,5 +49,6 @@ it('renders top albums correctly', () => {
 			navigate: () => {}
 		}
 	};
-  	renderer.create(<AlbumsView navigation={testNavigation} fetch="{}"/>);
+  	let albumsRender = renderer.create(<AlbumsView navigation={testNavigation} fetch="{}"/>).toJSON();
+	expect(albumsRender).toMatchSnapshot();
 });

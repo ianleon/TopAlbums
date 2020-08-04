@@ -155,7 +155,7 @@ class AlbumsView extends Component {
 
 const styles = StyleSheet.create({
   listSearch: {
-	height: 40,
+	height: 50,
 	fontSize: 20,
 	borderRadius: 10,
 	borderColor: '#ddd',

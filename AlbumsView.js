@@ -25,6 +25,17 @@ import {
 UIManager.setLayoutAnimationEnabledExperimental &&
 UIManager.setLayoutAnimationEnabledExperimental(true);
 
+const ListRow = ({item}) => {
+	return <SafeAreaView>
+		<Pressable
+		onPress={() => navigate('AlbumDetails', {item})}
+		style={styles.listRows}>
+			<Image style={styles.listImage} source={{ uri: item.image }} />
+			<Text style={styles.listTitles}>{item.title}</Text>
+		</Pressable>
+	</SafeAreaView>
+}
+
 class AlbumsView extends Component {
 
 	state = {
@@ -72,15 +83,7 @@ class AlbumsView extends Component {
 
 	render = () => {
 		const { navigate } = this.props.navigation;
-
-		return (<FlatList data={this.state.topAlbums} renderItem={ ({item}) =>
-				<SafeAreaView>
-					<Pressable onPress={() => navigate('AlbumDetails', { item })}
-					style={{ alignItems: "center", flexDirection: 'row', backgroundColor: "#fff", marginBottom: 1 }}>
-						<Image style={{ width: 70, height: 70 }} source={{ uri: item.image }} />
-						<Text style={styles.listTitles}>{item.title}</Text>
-					</Pressable>
-				</SafeAreaView>} />);
+		return (<FlatList data={this.state.topAlbums} renderItem={ListRow} />);
 	}
 }
 
@@ -89,8 +92,17 @@ const styles = StyleSheet.create({
 	padding: 10,
 	fontSize: 20,
 	flex: 1
-
   },
+  listImage: {
+	  width: 70,
+	  height: 70
+  },
+  listRows: {
+	  alignItems: "center",
+	  flexDirection: 'row',
+	  backgroundColor: "#fff",
+	  marginBottom: 1
+  }
 });
 
 export default AlbumsView;

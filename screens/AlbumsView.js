@@ -17,6 +17,18 @@ import { Avatar, Badge, Icon, withBadge } from 'react-native-elements'
 UIManager.setLayoutAnimationEnabledExperimental &&
 UIManager.setLayoutAnimationEnabledExperimental(true);
 
+function ListImage({item}) {
+
+  return (
+    <View>
+      <Avatar rounded source={{ uri: item.image }}
+        size="medium" containerStyle={{ margin: 10 }} />
+      <Badge status="error" value={item.position}
+        containerStyle={styles.positionBadge} />
+    </View>
+  );
+}
+
 class ListRow extends Component {
 	render = () => {
 		const {data : {item}, navigate} = this.props;
@@ -25,21 +37,7 @@ class ListRow extends Component {
         <Pressable
           onPress={() => navigate('AlbumDetails', {item})}
           style={styles.listRows}>
-          <View>
-            <Avatar
-              rounded
-              source={{ uri: item.image }}
-              size="medium"
-              containerStyle={{ margin: 10 }} />
-            <Badge
-              status="error"
-              value={item.position}
-              containerStyle={{
-                position: 'absolute',
-                top: 4,
-                right: -4
-              }} />
-          </View>
+          <ListImage item={item}/>
           <Text style={styles.listTitles}>{item.title}</Text>
         </Pressable>
       </SafeAreaView>
@@ -50,21 +48,15 @@ class ListRow extends Component {
 class AlbumsView extends Component {
 
 	state = {
-      topAlbums: [],
+    topAlbums: [],
 	  filteredTopAlbums: [],
 	  query: '',
-    };
+  };
 
 	contains = ({ title, artist }, query) => {
 
-		if (
-			title.toLowerCase().includes(query) ||
-			artist.toLowerCase().includes(query)
-		) {
-			return true;
-	  	}
-
-		return false
+    return title.toLowerCase().includes(query) ||
+      artist.toLowerCase().includes(query);
 	}
 
 	handleSearch = text => {
@@ -78,7 +70,6 @@ class AlbumsView extends Component {
 		this.setState({ filteredTopAlbums, query: text });
 	}
 
-
 	setAnimation = () => {
 		LayoutAnimation.configureNext({
 			duration: 500,
@@ -89,32 +80,30 @@ class AlbumsView extends Component {
 		});
 	};
 
-  	componentDidMount = () => {
-      fetch("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
-        .then(response => response.json())
-        .then(musicData => {
-          let cleanData = musicData.feed.entry.map((ent,i) => {
+	componentDidMount = () => {
+    fetch("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
+      .then(response => response.json())
+      .then(musicData => {
+        let cleanData = musicData.feed.entry.map((ent,i) => {
 
-            let key = i + "";
-            let position = i+1;
-            let title = ent["im:name"].label;
-            let artist = ent["im:artist"].label;
-            let releaseDate = ent["im:releaseDate"].attributes.label;
-            let category = ent.category.attributes.label;
-            let image = ent["im:image"][0].label;
-            let link = ent.link.attributes.href;
+          let key = i + "";
+          let position = i+1;
+          let title = ent["im:name"].label;
+          let artist = ent["im:artist"].label;
+          let releaseDate = ent["im:releaseDate"].attributes.label;
+          let category = ent.category.attributes.label;
+          let image = ent["im:image"][0].label;
+          let link = ent.link.attributes.href;
 
-    			  return (
-              {
-      				  key, position, image, releaseDate,
-      				  title, artist,category, link
-              }
-            );
+  			  return ({
+  				  key, position, image, releaseDate,
+  				  title, artist,category, link
           });
-          this.setAnimation();
-          this.setState({topAlbums: cleanData, filteredTopAlbums: cleanData});
         });
-    }
+        this.setAnimation();
+        this.setState({topAlbums: cleanData, filteredTopAlbums: cleanData});
+      });
+  }
 
 	renderHeader = () => (
     <View style={styles.listHeader}>
@@ -133,11 +122,16 @@ class AlbumsView extends Component {
 		return (<FlatList
 			ListHeaderComponent={this.renderHeader}
 			data={this.state.filteredTopAlbums}
-			renderItem={ (item) => <ListRow data={item} navigate={navigate} /> } />);
+			renderItem={ item => <ListRow data={item} navigate={navigate} /> } />);
 	}
 }
 
 const styles = StyleSheet.create({
+  positionBadge: {
+    position: 'absolute',
+    top: 4,
+    right: -4
+  },
   listHeader: {
     backgroundColor: '#fff',
     padding: 10,

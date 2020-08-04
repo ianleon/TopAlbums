@@ -17,6 +17,8 @@ import {
   StatusBar,
   FlatList,
   Image,
+  Linking,
+  Pressable
 } from 'react-native';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -49,9 +51,10 @@ class AlbumsView extends Component {
 
 			  let artist = ent["im:artist"].label;
 			  let category = ent.category.attributes.label;
-			  let image = ent["im:image"][2].label;
+			  let image = ent["im:image"][0].label;
+			  let link = ent.link.attributes.href;
 
-			  return ({key, position, image, title, artist,category});
+			  return ({key, position, image, title, artist,category, link});
 		  });
 		  this.setState({topAlbums: cleanData});
 
@@ -62,11 +65,20 @@ class AlbumsView extends Component {
 		const { navigate } = this.props.navigation;
 
 		return (
-			<FlatList data={this.state.topAlbums} renderItem={ ({item}) =>
-				<Text
-				onPress={() => navigate('AlbumDetails', { item })}
-				style={styles.listTitles}>{item.title}</Text>
+
+				<FlatList data={this.state.topAlbums} renderItem={ ({item}) =>
+				<SafeAreaView>
+					<Pressable onPress={() => navigate('AlbumDetails', { item })}
+					style={{  flexDirection: 'row', backgroundColor: "#fff", marginBottom: 1 }}>
+						<Image onPress={() => navigate('AlbumDetails', { item })} style={{ width: 70, height: 70 }} source={{ uri: item.image }} />
+						<Text
+						style={{fontSize: 20, padding: 10, width: 60, fontWeight: "bold"}}>{item.position}</Text>
+						<Text
+						style={styles.listTitles}>{item.title}</Text>
+					</Pressable>
+					</SafeAreaView>
 				} />
+
 	  	);
 	}
 }
@@ -83,28 +95,40 @@ const HomeScreen = ({ navigation }) => {
     />
   );
 };
-const ProfileScreen = ({ route }) => {
+const DetailView = ({ route }) => {
   /* 2. Get the param */
   const { item } = route.params;
-  const {key, position, image, title, artist, category} = item;
-
-  console.log(key);
+  const {key, position, image, title, artist, category, link} = item;
 
   return <>
-  <View style={{ padding: 16}}>
-  <Text style={{ fontSize: 70, fontWeight: "bold", paddingTop: 20}}>#{ position }</Text>
-  <Image
-        style={{ width: 170, height: 170 }}
-        source={{
-          uri: image,
-        }}
-      />
-  <Text style={{
-	  fontSize: 40
-	  }}>{ title }</Text>
-  <Text>{ artist }</Text>
-  <Text>{ category }</Text>
-  </View>
+  <ScrollView style={{ flex: 1, flexDirection: 'column', padding: 16}}>
+
+	<SafeAreaView>
+		<View style={{
+			flex: 1,
+			flexDirection: 'row',
+			justifyContent: "space-between",
+			width: "100%",
+			paddingBottom: 30
+		}}>
+			<Text style={{
+			fontSize: 27,
+			paddingRight: 20,
+			fontWeight: "bold",
+			maxWidth: "80%"
+			}}>{ title }</Text>
+			<Image style={{ width: 70, height: 70 }} source={{ uri: image }} />
+		</View>
+
+		<Text style={styles.detailLabel}>POSITION</Text>
+		<Text style={styles.detailValue}>{ position }</Text>
+		<Text style={styles.detailLabel}>ARTIST</Text>
+		<Text style={styles.detailValue}>{ artist }</Text>
+		<Text style={styles.detailLabel}>GENRE</Text>
+		<Text style={styles.detailValue}>{ category }</Text>
+		<Button title='Apple Music' color="#F22" onPress={ ()=> Linking.openURL(link) }>Buy</Button>
+	</SafeAreaView>
+  </ScrollView>
 
   </>;
 };
@@ -120,21 +144,30 @@ const App: () => React$Node = () => {
 			component={AlbumsView}
 			options={{ title: 'Top 100' }}
 		  />
-		  <Stack.Screen name="AlbumDetails" component={ProfileScreen} options={{ title: 'Details' }}/>
+		  <Stack.Screen name="AlbumDetails" component={DetailView} options={{ title: 'Details' }}/>
 		</Stack.Navigator>
 	  </NavigationContainer>
-      
+
     </>
   );
 };
 
 const styles = StyleSheet.create({
   listTitles: {
-	  padding: 10,
-	   fontSize: 18,
-	   borderBottomColor: "black",
-	   borderBottomWidth: 4,
-	   height: 44
+	padding: 10,
+	fontSize: 20,
+	flex: 1
+
+  },
+  border: {
+	  height: 20
+  },
+  detailLabel: {
+  	fontSize: 15,
+  },
+  detailValue: {
+  	fontSize: 22,
+	paddingBottom: 20
   },
 });
 

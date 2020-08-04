@@ -18,6 +18,8 @@ import {
   Pressable
 } from 'react-native';
 
+import Icon from 'react-native-vector-icons/AntDesign';
+
 const Hairline = () => {
 	return <View style={{backgroundColor: "#ddd", width: "100%", height: 1, marginBottom: 25}}></View>
 }
@@ -68,7 +70,22 @@ const DetailView = ({ route }) => {
 			padding: 20,
 			marginTop: 40,
 			}}>
-			<Text style={{ color: "white", fontSize: 20, fontWeight: "bold" }}>Get</Text>
+			<View style={{flex: 1, flexDirection: 'row' }}>
+				<Icon
+				name="apple1"
+				size={20}
+				color="#FFF"
+				style={{
+					top: 1,
+					marginRight: 5
+				}} />
+				<Text
+				style={{
+					color: "white",
+					fontSize: 20,
+					fontWeight: "bold"
+				}}>MUSIC</Text>
+			</View>
 		</Pressable>
 	</SafeAreaView>
   </ScrollView>

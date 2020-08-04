@@ -16,8 +16,8 @@ import {
   Linking,
   Pressable
 } from 'react-native';
-import DetailView from '../DetailView';
-import AlbumsView from '../AlbumsView';
+import DetailView from '../screens/DetailView';
+import AlbumsView from '../screens/AlbumsView';
 
 // Note: test renderer must be required after react-native.
 import renderer from 'react-test-renderer';

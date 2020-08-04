@@ -31,8 +31,8 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-import DetailView from './DetailView';
-import AlbumsView from './AlbumsView';
+import DetailView from './screens/DetailView';
+import AlbumsView from './screens/AlbumsView';
 
 const Stack = createStackNavigator();
 

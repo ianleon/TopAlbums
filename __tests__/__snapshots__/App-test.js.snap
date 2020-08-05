@@ -295,7 +295,6 @@ exports[`renders details correctly 1`] = `
         <View
           style={
             Object {
-              "flex": 1,
               "flexDirection": "row",
             }
           }
@@ -393,7 +392,7 @@ exports[`renders top albums correctly 1`] = `
               "borderRadius": 10,
               "borderWidth": 1,
               "fontSize": 20,
-              "height": 40,
+              "height": 50,
               "paddingLeft": 10,
               "width": "100%",
             }

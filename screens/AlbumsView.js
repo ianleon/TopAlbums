@@ -6,13 +6,18 @@
  */
 import React, { Component } from 'react'
 import {
-  SafeAreaView, StyleSheet, ScrollView,
-  View, Button, Text, UIManager,
-  LayoutAnimation, StatusBar, FlatList,
-  Image, Linking, TextInput, Pressable
+  FlatList,
+  LayoutAnimation,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  UIManager,
+  View
 } from 'react-native'
 import filter from 'lodash.filter'
-import { Avatar, Badge, Icon, withBadge } from 'react-native-elements'
+import { Avatar, Badge } from 'react-native-elements'
 
 UIManager.setLayoutAnimationEnabledExperimental &&
 UIManager.setLayoutAnimationEnabledExperimental(true);
@@ -21,18 +26,18 @@ function ListImage({item}) {
 
   return (
     <View>
-      <Avatar rounded source={{ uri: item.image }}
-        size="medium" containerStyle={{ margin: 10 }} />
+      <Avatar rounded source={{uri: item.image}}
+              size="medium" containerStyle={{margin: 10}}/>
       <Badge status="error" value={item.position}
-        containerStyle={styles.positionBadge} />
+             containerStyle={styles.positionBadge}/>
     </View>
   );
 }
 
 class ListRow extends Component {
-	render = () => {
-		const {data : {item}, navigate} = this.props;
-		return (
+  render = () => {
+    const {data: {item}, navigate} = this.props;
+    return (
       <SafeAreaView>
         <Pressable
           onPress={() => navigate('AlbumDetails', {item})}
@@ -42,52 +47,52 @@ class ListRow extends Component {
         </Pressable>
       </SafeAreaView>
     )
-	}
+  }
 }
 
 class AlbumsView extends Component {
 
-	state = {
+  state = {
     topAlbums: [],
-	  filteredTopAlbums: [],
-	  query: '',
+    filteredTopAlbums: [],
+    query: '',
   };
 
-	contains = ({ title, artist }, query) => {
+  contains = ({title, artist}, query) => {
 
     return title.toLowerCase().includes(query) ||
       artist.toLowerCase().includes(query);
-	}
+  }
 
-	handleSearch = text => {
-		const formattedQuery = text.toLowerCase();
-		const filteredTopAlbums = filter(
+  handleSearch = text => {
+    const formattedQuery = text.toLowerCase();
+    const filteredTopAlbums = filter(
       this.state.topAlbums,
       album => {
         return this.contains(album, formattedQuery)
-  		}
+      }
     );
-		this.setState({ filteredTopAlbums, query: text });
-	}
+    this.setState({filteredTopAlbums, query: text});
+  }
 
-	setAnimation = () => {
-		LayoutAnimation.configureNext({
-			duration: 500,
-			create: {
-				type: LayoutAnimation.Types.easeOut,
-				property: LayoutAnimation.Properties.scaleY,
-			},
-		});
-	};
+  setAnimation = () => {
+    LayoutAnimation.configureNext({
+      duration: 500,
+      create: {
+        type: LayoutAnimation.Types.easeOut,
+        property: LayoutAnimation.Properties.scaleY,
+      },
+    });
+  };
 
-	componentDidMount = () => {
+  componentDidMount = () => {
     fetch("https://itunes.apple.com/us/rss/topalbums/limit=100/json")
       .then(response => response.json())
       .then(musicData => {
-        let cleanData = musicData.feed.entry.map((ent,i) => {
+        let cleanData = musicData.feed.entry.map((ent, i) => {
 
           let key = i + "";
-          let position = i+1;
+          let position = i + 1;
           let title = ent["im:name"].label;
           let artist = ent["im:artist"].label;
           let releaseDate = ent["im:releaseDate"].attributes.label;
@@ -95,9 +100,9 @@ class AlbumsView extends Component {
           let image = ent["im:image"][0].label;
           let link = ent.link.attributes.href;
 
-  			  return ({
-  				  key, position, image, releaseDate,
-  				  title, artist,category, link
+          return ({
+            key, position, image, releaseDate,
+            title, artist, category, link
           });
         });
         this.setAnimation();
@@ -105,25 +110,25 @@ class AlbumsView extends Component {
       });
   }
 
-	renderHeader = () => (
+  renderHeader = () => (
     <View style={styles.listHeader}>
-	    <TextInput
-		    style={styles.listSearch}
-	      onChangeText={this.handleSearch}
-	      autoCapitalize='none'
-	      placeholder='Search' />
-	  </View>
-	)
+      <TextInput
+        style={styles.listSearch}
+        onChangeText={this.handleSearch}
+        autoCapitalize='none'
+        placeholder='Search'/>
+    </View>
+  )
 
-	render = () => {
+  render = () => {
 
-		const { navigate } = this.props.navigation;
+    const {navigate} = this.props.navigation;
 
-		return (<FlatList
-			ListHeaderComponent={this.renderHeader}
-			data={this.state.filteredTopAlbums}
-			renderItem={ item => <ListRow data={item} navigate={navigate} /> } />);
-	}
+    return (<FlatList
+      ListHeaderComponent={this.renderHeader}
+      data={this.state.filteredTopAlbums}
+      renderItem={item => <ListRow data={item} navigate={navigate}/>}/>);
+  }
 }
 
 const styles = StyleSheet.create({
@@ -139,28 +144,28 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   listSearch: {
-  	height: 50,
-  	fontSize: 20,
-  	borderRadius: 10,
-  	borderColor: '#ddd',
-  	borderWidth: 1,
-  	width: "100%",
-  	paddingLeft: 10
+    height: 50,
+    fontSize: 20,
+    borderRadius: 10,
+    borderColor: '#ddd',
+    borderWidth: 1,
+    width: "100%",
+    paddingLeft: 10
   },
   listTitles: {
-  	padding: 10,
-  	fontSize: 20,
-  	flex: 1
+    padding: 10,
+    fontSize: 20,
+    flex: 1
   },
   listImage: {
-	  width: 70,
-	  height: 70
+    width: 70,
+    height: 70
   },
   listRows: {
-	  alignItems: "center",
-	  flexDirection: 'row',
-	  backgroundColor: "#fff",
-	  marginBottom: 1
+    alignItems: "center",
+    flexDirection: 'row',
+    backgroundColor: "#fff",
+    marginBottom: 1
   }
 });
 
